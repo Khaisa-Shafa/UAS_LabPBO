@@ -15,6 +15,9 @@ public class UAS_LabPBO {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        
+        Frame_1 main = new Frame_1();
+        main.setVisible(true);
     }
     
 }
