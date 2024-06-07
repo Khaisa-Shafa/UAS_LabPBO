@@ -4,6 +4,7 @@
  */
 package uas_labpbo;
 
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 
@@ -25,7 +26,7 @@ public class DBConnector {
             Class.forName(JDBC_DRIVER);
             
             connection = DriverManager.getConnection(DB_URL, USER, PASSWORD);
-            
+           
             if (connection != null) 
             {
                 System.out.println("Connection is established");

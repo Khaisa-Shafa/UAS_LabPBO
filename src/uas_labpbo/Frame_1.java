@@ -4,28 +4,30 @@
  */
 package uas_labpbo;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
-
+import static uas_labpbo.DBConnector.connection;
 
 /**
  *
  * @author VIVOBOOK
  */
 public class Frame_1 extends javax.swing.JFrame {
-        ArrayList<Karya> daftarKarya;
+    ArrayList<Karya> daftarKarya;
+    TableModel daftarModel;
     
-        TableModel daftarModel;
     /**
      * Creates new form Frame_1
      */
     public Frame_1() {
         initComponents();
-        
         DBConnector.initDBConnection();
-        
         Karya.loadDetailKarya();
         System.out.println(Karya.daftarKarya.size());
         
@@ -33,20 +35,15 @@ public class Frame_1 extends javax.swing.JFrame {
         System.out.println(daftarKarya.size());
 
         daftarModel = daftarTable.getModel();
-        daftarModel.addTableModelListener(new TableModelListener(){
+         daftarModel.addTableModelListener(new TableModelListener(){
              @Override
             public void tableChanged(TableModelEvent tme) {
-                
-                if(tme.getColumn() == 4)
-                {
-                    
-                    
-                }
+
+       
             }
-            
-        }
-        );
+        });
     }
+        
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -68,36 +65,36 @@ public class Frame_1 extends javax.swing.JFrame {
 
         daftarTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "nama_lukisan", "pelukis", "tahun", "jenis_aliran"
+                "nama_lukisan", "pelukis", "tahun", "jenis_aliran", "foto"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, true, true, true
+                false, true, true, true, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -182,8 +179,34 @@ public class Frame_1 extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnShow1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnShow1ActionPerformed
-       
+        DefaultTableModel tb = new DefaultTableModel();
+        tb.addColumn("nama lukisan");
+        tb.addColumn("pelukis");
+        tb.addColumn("tahun");
+        tb.addColumn("jenis aliran lukisan");
+        tb.addColumn("image");
+        daftarTable.setModel(tb);
 
+        try {
+            DBConnector.initDBConnection();
+            String sql = "SELECT * FROM lukisan";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            ResultSet rs = stm.executeQuery(sql);
+
+            while (rs.next()) {
+                byte[] imageData = rs.getBytes("image_data");
+                tb.addRow(new Object[]{
+                    rs.getString("nama_lukisan"),
+                    rs.getString("pelukis"),
+                    rs.getInt("tahun"),
+                    rs.getString("jenis_aliran_lukisan"),
+                    imageData
+                });
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Data Gagal Ditampilkan: " + e.getMessage());
+        }
+    
     }//GEN-LAST:event_btnShow1ActionPerformed
 
     /**
