@@ -4,17 +4,48 @@
  */
 package uas_labpbo;
 
+import java.util.ArrayList;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
+import javax.swing.table.TableModel;
+
+
 /**
  *
  * @author VIVOBOOK
  */
 public class Frame_1 extends javax.swing.JFrame {
-
+        ArrayList<Karya> daftarKarya;
+    
+        TableModel daftarModel;
     /**
      * Creates new form Frame_1
      */
     public Frame_1() {
         initComponents();
+        
+        DBConnector.initDBConnection();
+        
+        Karya.loadDetailKarya();
+        System.out.println(Karya.daftarKarya.size());
+        
+        daftarKarya = Karya.daftarKarya;
+        System.out.println(daftarKarya.size());
+
+        daftarModel = daftarTable.getModel();
+        daftarModel.addTableModelListener(new TableModelListener(){
+             @Override
+            public void tableChanged(TableModelEvent tme) {
+                
+                if(tme.getColumn() == 4)
+                {
+                    
+                    
+                }
+            }
+            
+        }
+        );
     }
 
     /**
@@ -27,15 +58,15 @@ public class Frame_1 extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        daftarTable = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnShow1 = new javax.swing.JButton();
+        btnShow2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        daftarTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -59,14 +90,14 @@ public class Frame_1 extends javax.swing.JFrame {
                 {null, null, null, null}
             },
             new String [] {
-                "No", "Nama Karya", "Nama Pelukis", "Tahun"
+                "nama_lukisan", "pelukis", "tahun", "jenis_aliran"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class
+                java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, true, true, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -77,16 +108,10 @@ public class Frame_1 extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
-        if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(0).setResizable(false);
-            jTable1.getColumnModel().getColumn(0).setPreferredWidth(5);
-            jTable1.getColumnModel().getColumn(1).setResizable(false);
-            jTable1.getColumnModel().getColumn(1).setPreferredWidth(200);
-            jTable1.getColumnModel().getColumn(2).setResizable(false);
-            jTable1.getColumnModel().getColumn(2).setPreferredWidth(200);
-            jTable1.getColumnModel().getColumn(3).setResizable(false);
-            jTable1.getColumnModel().getColumn(3).setPreferredWidth(100);
+        jScrollPane1.setViewportView(daftarTable);
+        if (daftarTable.getColumnModel().getColumnCount() > 0) {
+            daftarTable.getColumnModel().getColumn(0).setResizable(false);
+            daftarTable.getColumnModel().getColumn(0).setPreferredWidth(5);
         }
 
         jLabel1.setFont(new java.awt.Font("Yu Mincho", 1, 24)); // NOI18N
@@ -109,9 +134,14 @@ public class Frame_1 extends javax.swing.JFrame {
                 .addContainerGap(53, Short.MAX_VALUE))
         );
 
-        jButton1.setText("jButton1");
+        btnShow1.setText("SHOW");
+        btnShow1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnShow1ActionPerformed(evt);
+            }
+        });
 
-        jButton2.setText("jButton2");
+        btnShow2.setText("SHOW");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -122,12 +152,13 @@ public class Frame_1 extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 686, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(48, 48, 48)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 638, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton1)
-                            .addComponent(jButton2))
-                        .addGap(0, 8, Short.MAX_VALUE)))
+                            .addComponent(btnShow1)
+                            .addComponent(btnShow2))
+                        .addGap(0, 11, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -140,15 +171,20 @@ public class Frame_1 extends javax.swing.JFrame {
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                         .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(48, 48, 48)
-                        .addComponent(jButton1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton2)
-                        .addContainerGap(293, Short.MAX_VALUE))))
+                        .addGap(35, 35, 35)
+                        .addComponent(btnShow1, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, 0)
+                        .addComponent(btnShow2, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(328, Short.MAX_VALUE))))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnShow1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnShow1ActionPerformed
+       
+
+    }//GEN-LAST:event_btnShow1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -186,11 +222,11 @@ public class Frame_1 extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton btnShow1;
+    private javax.swing.JButton btnShow2;
+    private javax.swing.JTable daftarTable;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 }
