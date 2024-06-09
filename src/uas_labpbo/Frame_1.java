@@ -5,16 +5,11 @@
 package uas_labpbo;
 
 import java.sql.Statement;
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import java.sql.SQLException;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 import static uas_labpbo.DBConnector.connection;
 
 /**
@@ -68,7 +63,7 @@ public class Frame_1 extends javax.swing.JFrame {
          row[3] = daftarKarya.get(i).getJenis_aliran();
          row[4] = daftarKarya.get(i).getGambar_lukisan();
          
-         model.addRow(row);
+         model.insertRow(0,row);
      }
     }
     
@@ -138,9 +133,10 @@ public class Frame_1 extends javax.swing.JFrame {
         jScrollPane1.setViewportView(daftarTable);
         if (daftarTable.getColumnModel().getColumnCount() > 0) {
             daftarTable.getColumnModel().getColumn(0).setResizable(false);
-            daftarTable.getColumnModel().getColumn(0).setPreferredWidth(5);
+            daftarTable.getColumnModel().getColumn(0).setPreferredWidth(10);
             daftarTable.getColumnModel().getColumn(1).setResizable(false);
             daftarTable.getColumnModel().getColumn(2).setResizable(false);
+            daftarTable.getColumnModel().getColumn(2).setPreferredWidth(10);
             daftarTable.getColumnModel().getColumn(3).setResizable(false);
             daftarTable.getColumnModel().getColumn(4).setResizable(false);
         }
