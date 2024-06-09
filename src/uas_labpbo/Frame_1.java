@@ -4,10 +4,13 @@
  */
 package uas_labpbo;
 
-import java.sql.PreparedStatement;
+import java.sql.Statement;
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import java.sql.SQLException;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
@@ -19,30 +22,57 @@ import static uas_labpbo.DBConnector.connection;
  * @author VIVOBOOK
  */
 public class Frame_1 extends javax.swing.JFrame {
-    ArrayList<Karya> daftarKarya;
-    TableModel daftarModel;
+   
     
     /**
      * Creates new form Frame_1
      */
     public Frame_1() {
         initComponents();
+        showdata();
         DBConnector.initDBConnection();
-        Karya.loadDetailKarya();
-        System.out.println(Karya.daftarKarya.size());
-        
-        daftarKarya = Karya.daftarKarya;
-        System.out.println(daftarKarya.size());
 
-        daftarModel = daftarTable.getModel();
-         daftarModel.addTableModelListener(new TableModelListener(){
-             @Override
-            public void tableChanged(TableModelEvent tme) {
-
-       
-            }
-        });
     }
+    
+    public ArrayList<Karya>daftarKarya(){
+    
+    ArrayList<Karya> daftarKarya = new ArrayList<>();
+    try {
+        DBConnector.initDBConnection();
+        Class.forName("com.mysql.cj.jdbc.Driver");
+        String query = "select * from lukisan";
+        Statement st = connection.createStatement();
+        ResultSet rs = st.executeQuery(query);
+        Karya conn;
+        while(rs.next()){
+            conn = new Karya(rs.getString("nama_lukisan"),rs.getString("pelukis"),rs.getInt("tahun"),rs.getString("jenis_aliran"), rs.getString("gambar_lukisan"));
+            daftarKarya.add(conn);
+        }
+    }
+    catch(ClassNotFoundException | SQLException e){
+        JOptionPane.showMessageDialog(null, e);
+        System.out.println("error");
+    }
+    return daftarKarya;
+    
+}
+     public void showdata(){
+     ArrayList<Karya>daftarKarya = daftarKarya();
+     DefaultTableModel model = (DefaultTableModel)daftarTable.getModel();
+     
+     Object[] row = new Object[5]; //5
+     for(int i = 0; i < daftarKarya.size(); i++){
+         row[0] = daftarKarya.get(i).getNama_lukisan();
+         row[1] = daftarKarya.get(i).getPelukis();
+         row[2] = daftarKarya.get(i).getTahun();
+         row[3] = daftarKarya.get(i).getJenis_aliran();
+         row[4] = daftarKarya.get(i).getGambar_lukisan();
+         
+         model.addRow(row);
+     }
+    }
+    
+    
         
 
     /**
@@ -87,14 +117,14 @@ public class Frame_1 extends javax.swing.JFrame {
                 {null, null, null, null, null}
             },
             new String [] {
-                "nama_lukisan", "pelukis", "tahun", "jenis_aliran", "foto"
+                "nama_lukisan", "pelukis", "tahun", "jenis_aliran", "gambar_lukisan"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.Object.class
+                java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, true, true, true, true
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -109,6 +139,10 @@ public class Frame_1 extends javax.swing.JFrame {
         if (daftarTable.getColumnModel().getColumnCount() > 0) {
             daftarTable.getColumnModel().getColumn(0).setResizable(false);
             daftarTable.getColumnModel().getColumn(0).setPreferredWidth(5);
+            daftarTable.getColumnModel().getColumn(1).setResizable(false);
+            daftarTable.getColumnModel().getColumn(2).setResizable(false);
+            daftarTable.getColumnModel().getColumn(3).setResizable(false);
+            daftarTable.getColumnModel().getColumn(4).setResizable(false);
         }
 
         jLabel1.setFont(new java.awt.Font("Yu Mincho", 1, 24)); // NOI18N
@@ -179,34 +213,7 @@ public class Frame_1 extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnShow1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnShow1ActionPerformed
-        DefaultTableModel tb = new DefaultTableModel();
-        tb.addColumn("nama lukisan");
-        tb.addColumn("pelukis");
-        tb.addColumn("tahun");
-        tb.addColumn("jenis aliran lukisan");
-        tb.addColumn("image");
-        daftarTable.setModel(tb);
-
-        try {
-            DBConnector.initDBConnection();
-            String sql = "SELECT * FROM lukisan";
-            PreparedStatement stm = connection.prepareStatement(sql);
-            ResultSet rs = stm.executeQuery(sql);
-
-            while (rs.next()) {
-                byte[] imageData = rs.getBytes("image_data");
-                tb.addRow(new Object[]{
-                    rs.getString("nama_lukisan"),
-                    rs.getString("pelukis"),
-                    rs.getInt("tahun"),
-                    rs.getString("jenis_aliran_lukisan"),
-                    imageData
-                });
-            }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Data Gagal Ditampilkan: " + e.getMessage());
-        }
-    
+     
     }//GEN-LAST:event_btnShow1ActionPerformed
 
     /**

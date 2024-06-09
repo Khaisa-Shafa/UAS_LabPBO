@@ -4,42 +4,45 @@
  */
 package uas_labpbo;
 
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.sql.ResultSet;
 /**
  *
  * @author USER
  */
 public class Karya {
-    public String namakarya;
-    public String namapelukis;
-    public int tahunrilis;
+    private String nama_lukisan;
+    private String pelukis;
+    private int tahun;
+    private String jenis_aliran;
+    private String gambar_lukisan;
     //tambah image lukisan.datatype???
     
-    static ArrayList<Karya> daftarKarya;
-    
-    public static void loadDetailKarya()
+   
+    public Karya(String nama_lukisan,String pelukis, int tahun, String jenis_aliran, String gambar_lukisan) //tambah gambar_lukisan
     {
-        daftarKarya = new ArrayList<Karya>();
-        Karya karya;
-        
-        try{
-            Statement stmt = DBConnector.connection.createStatement();
-            String sql = "SELECT * FROM karya";
-            
-            ResultSet rs = stmt.executeQuery(sql);
-            
-            while (rs.next()){
-                karya = new Karya();
-                karya.namakarya = rs.getString("namakarya");
-                karya.namapelukis = rs.getString("namapelukis");
-                karya.tahunrilis = rs.getInt("tahunrilis");
-                //tambah image lukisan. data type????
-            }
-        }
-        catch (Exception ex){
-            
-        }
+        this.nama_lukisan = nama_lukisan;
+        this.pelukis = pelukis;
+        this.tahun = tahun;
+        this.jenis_aliran = jenis_aliran;
+        this.gambar_lukisan = gambar_lukisan;
+        }  
+
+    public String getNama_lukisan() {
+        return nama_lukisan;
+    }
+
+    public String getPelukis() {
+        return pelukis;
+    }
+
+    public int getTahun() {
+        return tahun;
+    }
+
+    public String getJenis_aliran() {
+        return jenis_aliran;
+    }
+    
+    public String getGambar_lukisan() {
+        return gambar_lukisan;
     }
 }
