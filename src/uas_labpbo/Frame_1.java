@@ -4,64 +4,40 @@
  */
 package uas_labpbo;
 
-import java.sql.Statement;
-import java.sql.ResultSet;
 import java.util.ArrayList;
-import javax.swing.JOptionPane;
-import java.sql.SQLException;
+import javax.swing.ImageIcon;
 import javax.swing.table.DefaultTableModel;
-import static uas_labpbo.DBConnector.connection;
+import javax.swing.table.TableModel;
 
 /**
  *
  * @author VIVOBOOK
  */
 public class Frame_1 extends javax.swing.JFrame {
-   
+    
     
     /**
      * Creates new form Frame_1
      */
     public Frame_1() {
         initComponents();
+        DBConnector.initDBConnection();
+        Karya.LoadKarya();
         showdata();
-        DBConnector.initDBConnection();
-
     }
     
-    public ArrayList<Karya>daftarKarya(){
-    
-    ArrayList<Karya> daftarKarya = new ArrayList<>();
-    try {
-        DBConnector.initDBConnection();
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        String query = "select * from lukisan";
-        Statement st = connection.createStatement();
-        ResultSet rs = st.executeQuery(query);
-        Karya conn;
-        while(rs.next()){
-            conn = new Karya(rs.getString("nama_lukisan"),rs.getString("pelukis"),rs.getInt("tahun"),rs.getString("jenis_aliran"), rs.getString("gambar_lukisan"));
-            daftarKarya.add(conn);
-        }
-    }
-    catch(ClassNotFoundException | SQLException e){
-        JOptionPane.showMessageDialog(null, e);
-        System.out.println("error");
-    }
-    return daftarKarya;
-    
-}
      public void showdata(){
-     ArrayList<Karya>daftarKarya = daftarKarya();
+     ArrayList<Karya> daftar = Karya.daftarKarya;
      DefaultTableModel model = (DefaultTableModel)daftarTable.getModel();
+     model.setRowCount(0);
      
-     Object[] row = new Object[5]; //5
-     for(int i = 0; i < daftarKarya.size(); i++){
-         row[0] = daftarKarya.get(i).getNama_lukisan();
-         row[1] = daftarKarya.get(i).getPelukis();
-         row[2] = daftarKarya.get(i).getTahun();
-         row[3] = daftarKarya.get(i).getJenis_aliran();
-         row[4] = daftarKarya.get(i).getGambar_lukisan();
+     Object[] row = new Object[5];
+     for(int i = 0; i < daftar.size(); i++){
+         Karya karya = daftar.get(i);
+         row[0] = i+1;
+         row[1] = karya.getNamaLukisan();
+         row[2] = karya.getPelukis();
+         row[3] = karya.getJenisAliran();
          
          model.insertRow(0,row);
      }
@@ -90,36 +66,36 @@ public class Frame_1 extends javax.swing.JFrame {
 
         daftarTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "nama_lukisan", "pelukis", "tahun", "jenis_aliran", "gambar_lukisan"
+                "No.", "Nama Karya", "Pelukis", "Aliran seni"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -135,10 +111,10 @@ public class Frame_1 extends javax.swing.JFrame {
             daftarTable.getColumnModel().getColumn(0).setResizable(false);
             daftarTable.getColumnModel().getColumn(0).setPreferredWidth(10);
             daftarTable.getColumnModel().getColumn(1).setResizable(false);
+            daftarTable.getColumnModel().getColumn(1).setPreferredWidth(100);
             daftarTable.getColumnModel().getColumn(2).setResizable(false);
-            daftarTable.getColumnModel().getColumn(2).setPreferredWidth(10);
+            daftarTable.getColumnModel().getColumn(2).setPreferredWidth(100);
             daftarTable.getColumnModel().getColumn(3).setResizable(false);
-            daftarTable.getColumnModel().getColumn(4).setResizable(false);
         }
 
         jLabel1.setFont(new java.awt.Font("Yu Mincho", 1, 24)); // NOI18N
@@ -158,7 +134,7 @@ public class Frame_1 extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(19, 19, 19)
                 .addComponent(jLabel1)
-                .addContainerGap(53, Short.MAX_VALUE))
+                .addContainerGap(26, Short.MAX_VALUE))
         );
 
         btnShow1.setText("SHOW");

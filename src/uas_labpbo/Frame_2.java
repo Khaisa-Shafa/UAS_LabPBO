@@ -4,6 +4,10 @@
  */
 package uas_labpbo;
 
+import java.awt.Image;
+import java.util.ArrayList;
+import javax.swing.ImageIcon;
+
 /**
  *
  * @author VIVOBOOK
@@ -15,6 +19,48 @@ public class Frame_2 extends javax.swing.JFrame {
      */
     public Frame_2() {
         initComponents();
+        DBConnector.initDBConnection();
+        Karya.LoadKarya();
+        
+        ArrayList<Karya> daftar = Karya.daftarKarya;
+        if (daftar != null && !daftar.isEmpty()) {
+            Karya karya = daftar.get(0);
+            byte[] gambar = karya.getGambarLukisan();
+            displayImage(gambar);
+        }
+    }
+
+    private void displayImage(byte[] imageBytes) {
+        if (imageBytes != null) {
+            ImageIcon imageIcon = new ImageIcon(imageBytes);
+            
+            Image image = imageIcon.getImage();
+            double aspectRatio = (double) image.getWidth(null) / image.getHeight(null);
+        
+            int labelWidth = jLabel1.getWidth();
+        int labelHeight = jLabel1.getHeight();
+        
+        // Determine the new dimensions while maintaining the aspect ratio
+        int newWidth;
+        int newHeight;
+        
+        // Scale to fit within JLabel's dimensions
+        if (labelWidth / (double) labelHeight > aspectRatio) {
+            // Label is wider relative to its height compared to the image
+            newHeight = labelHeight;
+            newWidth = (int) (newHeight * aspectRatio);
+        } else {
+            // Label is taller relative to its width compared to the image
+            newWidth = labelWidth;
+            newHeight = (int) (newWidth / aspectRatio);
+        }
+            
+            Image scaledImage = image.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
+            imageIcon = new ImageIcon(scaledImage);
+
+            jLabel1.setIcon(imageIcon);
+            jLabel1.setText("");
+        }
     }
 
     /**
@@ -31,6 +77,7 @@ public class Frame_2 extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
 
         jList1.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -54,15 +101,23 @@ public class Frame_2 extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jLabel1.setText("jLabel1");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 533, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(123, 123, 123)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(145, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 454, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(31, 31, 31)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(167, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -121,6 +176,7 @@ public class Frame_2 extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JList<String> jList1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
