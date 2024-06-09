@@ -16,14 +16,14 @@ public class Karya {
     private String pelukis;
     private int tahun;
     private String jenis_aliran;
-    private byte[] gambar_lukisan;
+    public byte[] foto;
 
-    public Karya(String nama_lukisan, String pelukis, int tahun, String jenis_aliran, byte[] gambar_lukisan) {
+    public Karya(String nama_lukisan, String pelukis, int tahun, String jenis_aliran, byte[] foto) {
         this.nama_lukisan = nama_lukisan;
         this.pelukis = pelukis;
         this.tahun = tahun;
         this.jenis_aliran = jenis_aliran;
-        this.gambar_lukisan = gambar_lukisan;
+        this.foto = foto;
     }
     public Karya() {
     }
@@ -48,9 +48,10 @@ public class Karya {
         return jenis_aliran;
     }
 
-    public byte[] getGambarLukisan() {
-        return gambar_lukisan;
+    public byte[] getFoto() {
+        return foto;
     }
+
 
     static ArrayList<Karya> daftarKarya;
 
@@ -70,7 +71,7 @@ public class Karya {
                 karya.pelukis = rs.getString("pelukis");  // Correct field for pelukis
                 karya.tahun = rs.getInt("tahun");
                 karya.jenis_aliran = rs.getString("jenis_aliran");
-                karya.gambar_lukisan = rs.getBytes("foto");
+                karya.foto = rs.getBytes("foto");
 
                 daftarKarya.add(karya);
             }

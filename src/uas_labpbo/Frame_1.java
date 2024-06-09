@@ -39,12 +39,10 @@ public class Frame_1 extends javax.swing.JFrame {
          row[2] = karya.getPelukis();
          row[3] = karya.getJenisAliran();
          
-         model.insertRow(0,row);
+         model.addRow(row);
      }
     }
-    
-    
-        
+     
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -145,6 +143,11 @@ public class Frame_1 extends javax.swing.JFrame {
         });
 
         btnShow2.setText("SHOW");
+        btnShow2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnShow2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -185,8 +188,18 @@ public class Frame_1 extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnShow1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnShow1ActionPerformed
-     
+    Frame_2 sec = new Frame_2();
+    sec.setVisible(true);
+    
+    dispose();
     }//GEN-LAST:event_btnShow1ActionPerformed
+
+    private void btnShow2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnShow2ActionPerformed
+    Frame_2 sec = new Frame_2();
+    sec.setVisible(true);
+    
+    dispose();
+    }//GEN-LAST:event_btnShow2ActionPerformed
 
     /**
      * @param args the command line arguments
