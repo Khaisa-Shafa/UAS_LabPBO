@@ -29,7 +29,7 @@ public class Frame_1 extends javax.swing.JFrame {
      DefaultTableModel model = (DefaultTableModel)daftarTable.getModel();
      model.setRowCount(0);
      
-     Object[] row = new Object[5];
+     Object[] row = new Object[4];
      for(int i = 0; i < daftar.size(); i++){
          Karya karya = daftar.get(i);
          row[0] = i+1;
@@ -55,7 +55,7 @@ public class Frame_1 extends javax.swing.JFrame {
         daftarTable = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        toFrame2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -137,10 +137,10 @@ public class Frame_1 extends javax.swing.JFrame {
                 .addContainerGap(26, Short.MAX_VALUE))
         );
 
-        jButton1.setText("SHOW");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        toFrame2.setText("SHOW");
+        toFrame2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                toFrame2ActionPerformed(evt);
             }
         });
 
@@ -155,7 +155,7 @@ public class Frame_1 extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(48, 48, 48)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton1)
+                            .addComponent(toFrame2)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 638, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 89, Short.MAX_VALUE)))
                 .addContainerGap())
@@ -167,7 +167,7 @@ public class Frame_1 extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 361, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jButton1)
+                .addComponent(toFrame2)
                 .addContainerGap(30, Short.MAX_VALUE))
         );
 
@@ -181,15 +181,15 @@ public class Frame_1 extends javax.swing.JFrame {
         
     }//GEN-LAST:event_daftarTableMouseClicked
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void toFrame2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toFrame2ActionPerformed
         // TODO add your handling code here:
         if (selectedRow >= 0) {
             DefaultTableModel model = (DefaultTableModel) daftarTable.getModel();
             Object[] rowData = new Object[model.getColumnCount()];
             
             // Pass the selected row data to the next frame
-//            Frame_2 detailFrame = new Frame_2(selectedRow+1);
-//            detailFrame.setVisible(true);
+           Frame_2 detailFrame = new Frame_2(selectedRow+1);
+           detailFrame.setVisible(true);
             //PAKE INI NANTI sambungin ke frame2
             
             // Close current frame
@@ -198,13 +198,13 @@ public class Frame_1 extends javax.swing.JFrame {
     } else {
         System.out.println("No row selected");
     }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_toFrame2ActionPerformed
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
+        /* Set the Nimbus look and feel */ 
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
@@ -237,9 +237,9 @@ public class Frame_1 extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable daftarTable;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton toFrame2;
     // End of variables declaration//GEN-END:variables
 }

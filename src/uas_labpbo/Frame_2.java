@@ -17,7 +17,7 @@ public class Frame_2 extends javax.swing.JFrame {
     /**
      * Creates new form Frame_2
      */
-    public Frame_2() {
+    public Frame_2(int par) {
         initComponents();
         DBConnector.initDBConnection();
         Karya.LoadKarya();
@@ -63,6 +63,8 @@ public class Frame_2 extends javax.swing.JFrame {
             jLabel1.setText("");
         }
     }
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -207,7 +209,8 @@ public class Frame_2 extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Frame_2().setVisible(true);
+                int selectedRow = 0;
+                new Frame_2(selectedRow + 1).setVisible(true);
             }
         });
     }
