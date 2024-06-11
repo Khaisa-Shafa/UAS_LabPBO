@@ -188,7 +188,7 @@ public class Frame_1 extends javax.swing.JFrame {
             Object[] rowData = new Object[model.getColumnCount()];
             
             // Pass the selected row data to the next frame
-           Frame_2 detailFrame = new Frame_2(selectedRow+1);
+           Frame_2 detailFrame = new Frame_2(selectedRow);
            detailFrame.setVisible(true);
             //PAKE INI NANTI sambungin ke frame2
             

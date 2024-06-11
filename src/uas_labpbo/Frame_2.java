@@ -7,6 +7,7 @@ package uas_labpbo;
 import java.awt.Image;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
+import javax.swing.table.TableModel;
 
 /**
  *
@@ -25,9 +26,15 @@ public class Frame_2 extends javax.swing.JFrame {
         ArrayList<Karya> daftar = Karya.daftarKarya;
 
         if (daftar != null && !daftar.isEmpty()) {
-            Karya karya = daftar.get(0);
+            Karya karya = daftar.get(par);
             byte[] gambar = karya.getFoto();
             displayImage(gambar);
+            
+            String NamaLukisan = karya.getNamaLukisan();
+            String Pelukis = karya.getPelukis();
+            int Tahun = karya.getTahun();
+            String JenisAliran = karya.getJenisAliran();
+            displaydata(NamaLukisan, Pelukis, Tahun, JenisAliran);
         }
     }
 
@@ -64,7 +71,26 @@ public class Frame_2 extends javax.swing.JFrame {
         }
     }
     
-    
+    private void displaydata(String NamaLukisan, String Pelukis, int Tahun, String JenisAliran){
+        TableModel detailModel;
+        detailModel = Table2.getModel();
+        
+        detailModel.setValueAt("Nama Karya", 0, 0);
+        detailModel.setValueAt("Nama Pelukis", 1, 0);
+        detailModel.setValueAt("Tahun Pembuatan", 2, 0);
+        detailModel.setValueAt("Aliran Karya", 3, 0);
+        
+        detailModel.setValueAt(":", 0, 1);
+        detailModel.setValueAt(":", 1, 1);
+        detailModel.setValueAt(":", 2, 1);
+        detailModel.setValueAt(":", 3, 1);
+//        String Tahun1 = inttoString(Tahun);
+        detailModel.setValueAt(NamaLukisan, 0, 2);
+        detailModel.setValueAt(Pelukis, 1, 2);
+        detailModel.setValueAt(Tahun, 2, 2 );
+        detailModel.setValueAt(JenisAliran, 3, 2);
+        
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -84,7 +110,8 @@ public class Frame_2 extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane5 = new javax.swing.JScrollPane();
-        jTable4 = new javax.swing.JTable();
+        Table2 = new javax.swing.JTable();
+        jButton1 = new javax.swing.JButton();
 
         jList1.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -123,17 +150,48 @@ public class Frame_2 extends javax.swing.JFrame {
 
         jLabel1.setText("Karya Seni");
 
-        jTable4.setModel(new javax.swing.table.DefaultTableModel(
+        Table2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null},
-                {null},
-                {null}
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
             },
             new String [] {
-                "Title 1"
+                "Detail", "", ""
             }
-        ));
-        jScrollPane5.setViewportView(jTable4);
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane5.setViewportView(Table2);
+        if (Table2.getColumnModel().getColumnCount() > 0) {
+            Table2.getColumnModel().getColumn(0).setResizable(false);
+            Table2.getColumnModel().getColumn(0).setPreferredWidth(250);
+            Table2.getColumnModel().getColumn(1).setResizable(false);
+            Table2.getColumnModel().getColumn(1).setPreferredWidth(5);
+            Table2.getColumnModel().getColumn(2).setResizable(false);
+            Table2.getColumnModel().getColumn(2).setPreferredWidth(250);
+        }
+
+        jButton1.setText("BACK");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -142,7 +200,9 @@ public class Frame_2 extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(192, 192, 192)
+                        .addGap(45, 45, 45)
+                        .addComponent(jButton1)
+                        .addGap(72, 72, 72)
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(95, 95, 95)
@@ -153,7 +213,9 @@ public class Frame_2 extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(21, 21, 21)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1))
                 .addGap(38, 38, 38)
                 .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(99, Short.MAX_VALUE))
@@ -178,6 +240,14 @@ public class Frame_2 extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+
+        Frame_1 detailFrame = new Frame_1();
+           detailFrame.setVisible(true);
+
+        this.dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -216,6 +286,8 @@ public class Frame_2 extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable Table2;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JList<String> jList1;
     private javax.swing.JPanel jPanel1;
@@ -225,6 +297,5 @@ public class Frame_2 extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
-    private javax.swing.JTable jTable4;
     // End of variables declaration//GEN-END:variables
 }
