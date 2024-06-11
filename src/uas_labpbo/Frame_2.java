@@ -48,17 +48,13 @@ public class Frame_2 extends javax.swing.JFrame {
             int labelWidth = jLabel1.getWidth();
             int labelHeight = jLabel1.getHeight();
         
-        // Determine the new dimensions while maintaining the aspect ratio
         int newWidth;
         int newHeight;
-        
-        // Scale to fit within JLabel's dimensions
+
         if (labelWidth / (double) labelHeight > aspectRatio) {
-            // Label is wider relative to its height compared to the image
             newHeight = labelHeight;
             newWidth = (int) (newHeight * aspectRatio);
         } else {
-            // Label is taller relative to its width compared to the image
             newWidth = labelWidth;
             newHeight = (int) (newWidth / aspectRatio);
         }
@@ -84,7 +80,7 @@ public class Frame_2 extends javax.swing.JFrame {
         detailModel.setValueAt(":", 1, 1);
         detailModel.setValueAt(":", 2, 1);
         detailModel.setValueAt(":", 3, 1);
-//        String Tahun1 = inttoString(Tahun);
+
         detailModel.setValueAt(NamaLukisan, 0, 2);
         detailModel.setValueAt(Pelukis, 1, 2);
         detailModel.setValueAt(Tahun, 2, 2 );
